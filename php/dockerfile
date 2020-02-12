@@ -1,0 +1,73 @@
+# FROM php:7.2-fpm-alpine
+
+# RUN docker-php-ext-install pdo pdo_mysql
+
+FROM php:7.2-fpm
+
+WORKDIR /var/www
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends apt-utils && \
+    apt-get install -y libpq-dev && \
+    apt-get install -y unixodbc unixodbc-dev
+RUN docker-php-ext-configure pdo_odbc --with-pdo-odbc=unixODBC,/usr/
+RUN docker-php-ext-install \
+    mysqli \
+    pdo \
+    pdo_mysql \
+    pgsql \
+    pdo_pgsql \
+    pdo_odbc \
+    bcmath
+RUN apt-get install -y \
+    nano \
+    unzip \
+    zip \
+    libaio-dev \
+    freetds-bin \
+    freetds-dev \
+    freetds-common
+
+# Oracle instantclient
+
+COPY ./oracle/instantclient-basic-linux.x64-12.2.0.1.0.zip \
+    ./oracle/instantclient-sdk-linux.x64-12.2.0.1.0.zip \
+    ./oracle/instantclient-sqlplus-linux.x64-12.2.0.1.0.zip /tmp/
+
+ENV LD_LIBRARY_PATH=/usr/local/instantclient
+ENV ORACLE_HOME=/usr/local/instantclient
+
+RUN unzip -o /tmp/instantclient-basic-linux.x64-12.2.0.1.0.zip -d /usr/local/
+RUN unzip -o /tmp/instantclient-sdk-linux.x64-12.2.0.1.0.zip -d /usr/local/
+RUN unzip -o /tmp/instantclient-sqlplus-linux.x64-12.2.0.1.0.zip -d /usr/local/
+
+RUN ln -s /usr/local/instantclient_12_2 /usr/local/instantclient
+RUN ln -s /usr/local/instantclient/libocci.so.* /usr/local/instantclient/libocci.so
+RUN ln -s /usr/local/instantclient/libclntsh.so.* /usr/local/instantclient/libclntsh.so
+RUN ln -s /usr/local/instantclient/libclntshcore.so.* /usr/local/instantclient/libclntshcore.so
+RUN ln -s /usr/local/instantclient/sqlplus /usr/bin/sqlplus
+
+RUN echo 'export LD_LIBRARY_PATH="/usr/local/instantclient"' >> /root/.bashrc && \
+    echo 'export ORACLE_HOME="/usr/local/instantclient"' >> /root/.bashrc && \
+    echo 'umask 002' >> /root/.bashrc
+
+RUN docker-php-ext-configure oci8 --with-oci8=instantclient,/usr/local/instantclient && \
+    docker-php-ext-install \
+    oci8
+
+RUN docker-php-ext-configure pdo_oci --with-pdo-oci=instantclient,/usr/local/instantclient,12.2 && \
+    docker-php-ext-install \
+    pdo_oci
+
+RUN docker-php-ext-configure pdo_dblib --with-libdir=/lib/x86_64-linux-gnu && \
+    docker-php-ext-install \
+    pdo_dblib
+RUN docker-php-ext-enable pdo_dblib
+
+
+
+# # Install Composer
+# # RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+# COPY --from=composer /usr/bin/composer /usr/bin/composer
+
+# RUN chown -R www-data:www-data /var/www/html
