@@ -3,11 +3,11 @@ Estrutura de pasta
 
 ### Estrutura para a pasta www para criação de projetos
 
-.
-├── laravel                   # Projeto laravel
-├── public                    # Projetos PHP
-│   ├── index.php             # Info PHP
-└── README.md
+    .
+    ├── laravel                   # Projetos laravel
+    ├── public                    # Projetos PHP
+    │   ├── index.php             # Info PHP
+    └── README.md
 
 > laravel
 Pasta para o projeto laravel
