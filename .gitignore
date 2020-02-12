@@ -1,4 +1,4 @@
 .env
-www/laravel/*
+# www/laravel/*
 www/public/*
 logs/*
