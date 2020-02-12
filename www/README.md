@@ -10,7 +10,9 @@ Estrutura de pasta
     └── README.md
 
 > laravel
+
 Pasta para o projeto laravel
 
 > public
+
 Você pode criar novas pastas aqui na para seus projetos e acessá-las como por exemplo: `localhos/meu-projeto`
