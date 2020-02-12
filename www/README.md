@@ -4,7 +4,7 @@ Estrutura de pasta
 ### Estrutura para a pasta www para criação de projetos
 
     .
-    ├── laravel                   # Projetos laravel
+    ├── laravel                   # Projeto laravel
     ├── public                    # Projetos PHP
     │   ├── index.php             # Info PHP
     └── README.md
