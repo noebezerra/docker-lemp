@@ -4,7 +4,7 @@
 |-------|---------|
 | Nginx | 1.14    |
 | Mysql | 8       |
-| PHP   | 7.1-fpm |
+| PHP   | 7.2-fpm |
 
 > PDO: mysql, sqlite, odbc, pgsql, oci, dblib
 
