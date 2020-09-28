@@ -6,7 +6,7 @@
 | Mysql | 8       |
 | PHP   | 7.2-fpm |
 
-> PDO: mysql, sqlite, odbc, pgsql, oci, dblib
+> PDO: mysql, sqlite, odbc, pgsql, oci, dblib, memcached, gd
 
 **Principais comandos:**
 ```
