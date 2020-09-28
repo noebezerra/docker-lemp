@@ -5,13 +5,18 @@ Estrutura de pasta
 
     .
     ├── laravel                   # Projeto laravel
+    ├── wordpress                 # Projetos Wordpress
     ├── public                    # Projetos PHP
     │   ├── index.php             # Info PHP
     └── README.md
 
 > laravel
 
-Pasta para o projeto laravel
+Pasta para o projeto laravel (laravel.test)
+
+> Wordpress
+
+Pasta para o projeto wordpress (wordpress.test)
 
 > public
 
