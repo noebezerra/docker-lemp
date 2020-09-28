@@ -7,9 +7,28 @@ FROM php:7.2-fpm
 WORKDIR /var/www
 
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends apt-utils && \
-    apt-get install -y libpq-dev && \
-    apt-get install -y unixodbc unixodbc-dev
+    apt-get install -y --no-install-recommends \
+    apt-utils \
+    libmemcached-dev \
+    zlib1g-dev \
+    && apt-get install -y libpq-dev \
+    && apt-get install -y unixodbc unixodbc-dev sendmail \
+    && pecl install memcached-3.1.3 \
+    && docker-php-ext-enable memcached opcache
+    # Mail
+    # apt-get install -y -q --no-install-recommends ssmtp && \
+    # apt-get clean && \
+    # rm -r /var/lib/apt/lists/*
+RUN apt-get install -y \
+    nano \
+    unzip \
+    zip \
+    libaio-dev \
+    freetds-bin \
+    freetds-dev \
+    freetds-common \
+    zlib1g-dev \
+    libpng-dev
 RUN docker-php-ext-configure pdo_odbc --with-pdo-odbc=unixODBC,/usr/
 RUN docker-php-ext-install \
     mysqli \
@@ -18,15 +37,9 @@ RUN docker-php-ext-install \
     pgsql \
     pdo_pgsql \
     pdo_odbc \
-    bcmath
-RUN apt-get install -y \
-    nano \
-    unzip \
+    bcmath \
     zip \
-    libaio-dev \
-    freetds-bin \
-    freetds-dev \
-    freetds-common
+    gd
 
 # Oracle instantclient
 
@@ -63,7 +76,6 @@ RUN docker-php-ext-configure pdo_dblib --with-libdir=/lib/x86_64-linux-gnu && \
     docker-php-ext-install \
     pdo_dblib
 RUN docker-php-ext-enable pdo_dblib
-
 
 
 # # Install Composer
